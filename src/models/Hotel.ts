@@ -9,20 +9,21 @@ export interface IHotel {
   contactInfo: string;
   totalRooms: number;
   bookedRooms: number;
-  guests: Types.Array<IGuest | Types.ObjectId>;
+  // guests: Types.Array<IGuest | Types.ObjectId>;
+  guests: mongoose.Types.ObjectId[]|IGuest[];
 }
 
 export interface IHotelModel extends IHotel, Document {}
 
 const HotelSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
-    owner: { type: String, required: true },
-    fullAddress: { type: String, required: true },
-    contactInfo: { type: String, required: true },
-    totalRooms: { type: Number, required: true },
-    bookedRooms: { type: Number, required: true },
-    guests: [{ type: Schema.Types.ObjectId, ref: 'Guest' }], 
+   name: { type: String, required: true },
+        owner: { type: String, required: true },
+        fullAddress: { type: String, required: true },
+        contactInfo: { type: String, required: true },
+        totalRooms: { type: Number, required: true },
+        bookedRooms: { type: Number, required: true },
+        guests: [{ type: Schema.Types.ObjectId, ref: 'Guest' }]
   },
   { versionKey: false }
 );

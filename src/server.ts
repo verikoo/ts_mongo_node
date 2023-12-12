@@ -4,7 +4,12 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 
+// import routes
 import hotelServcieRoutes from './routes/HotelService';
+import paymentRout from './routes/Payment';
+import roomRout from './routes/Room';
+import hotelRout from './routes/Hotel'
+import guestRoute from "./routes/Guest";
 
 
 const router = express();
@@ -55,7 +60,10 @@ const StartServer =  () =>{
 
     /** Routes */
     router.use('/hotelServices', hotelServcieRoutes);
-     
+    router.use('/payment',paymentRout );
+    router.use('/room', roomRout);
+    router.use('/hotel', hotelRout);
+    router.use('/guest', guestRoute);
 
     /** Helathckeck*/
     router.get('/ping', (req,res, next)=> res.status(200).json({message:'pong'}));

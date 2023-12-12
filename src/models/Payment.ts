@@ -18,4 +18,4 @@ const PaymentSchema: Schema = new Schema(
 );
 
 
-export default mongoose.model<IPaymentModel>('HotelSerPaymentvice', PaymentSchema);
+export default mongoose.model<IPaymentModel>('HotelPayment', PaymentSchema);

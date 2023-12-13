@@ -4,10 +4,10 @@ import { validateGuestCreate } from '../middleware/ValidationMiddleware.ts';
 
 const router = express.Router();
 
-router.post('/create', validateGuestCreate, controller.createGuest);
-router.get('/get/:guestId', controller.readGuest);
-router.get('/get/', controller.readAllGuests);
-router.patch('/update/:guestId', controller.updateGuest);
-router.delete('/delete/:guestId', controller.deleteGuest);
+router.post('/', validateGuestCreate, controller.createGuest);
+router.get('/:guestId', controller.readGuest);
+router.get('/', controller.readAllGuests);
+router.patch('/:guestId', controller.updateGuest);
+router.delete('/:guestId', controller.deleteGuest);
 
 export = router;

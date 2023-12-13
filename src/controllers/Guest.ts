@@ -38,7 +38,7 @@ const readAllGuests = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-const updateGuest = (req: Request, res: Response, next: NextFunction) => {
+const updateGuest = async (req: Request, res: Response, next: NextFunction) => {
     const guestId = req.params.guestId;
 
     const isValidObjectId = mongoose.Types.ObjectId.isValid(guestId);
@@ -47,28 +47,24 @@ const updateGuest = (req: Request, res: Response, next: NextFunction) => {
         return res.status(400).json({ message: 'Invalid ObjectId format' });
     }
 
-    return Guest.findById(guestId)
-        .then((guest) => {
-            if (guest) {
-                guest.set(req.body);
+     await Guest.findByIdAndUpdate(guestId, req.body).catch(err => console.log(err.message))
 
-                return guest
-                    .save()
-                    .then((guest) => res.status(201).json({ guest }))
-                    .catch((error) => res.status(500).json({ error }));
-            } else {
-                return res.status(404).json({ message: 'Not found' });
-            }
-        })
-        .catch((error) => res.status(500).json({ error }));
+     return res.json({})
 };
 
-const deleteGuest = (req: Request, res: Response, next: NextFunction) => {
+
+const deleteGuest = async (req: Request, res: Response, next: NextFunction) => {
     const guestId = req.params.guestId;
 
-    return Guest.findById(guestId)
-        .then((guest) => (guest ? res.status(201).json({ message: 'deleted' }) : res.status(404).json({ message: 'Not found' })))
-        .catch((error) => res.status(500).json({ error }));
+    const isValidObjectId = mongoose.Types.ObjectId.isValid(guestId);
+
+    if (!isValidObjectId) {
+        return res.status(400).json({ message: 'Invalid ObjectId format' });
+    }
+
+        await Guest.findOneAndDelete({ _id: guestId }).catch(err => console.log(err.message));
+        return res.json({});
 };
+
 
 export default { createGuest, readGuest, readAllGuests, updateGuest, deleteGuest };

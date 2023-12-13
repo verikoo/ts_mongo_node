@@ -3,13 +3,12 @@ import controller from '../controllers/Hotel';
 
 const router = express.Router();
 
-router.post('/create', controller.createHotel);
-router.get('/get/:hotelId', controller.readHotel);
-router.get('/get/', controller.readAllHotels);
-router.patch('/update/:hotelId', controller.updateHotel);
-router.delete('/delete/:hotelId', controller.deleteHotel);
+router.post('/', controller.createHotel);
+router.get('/:hotelId', controller.readHotel);
+router.patch('/:hotelId', controller.updateHotel);
+router.delete('/:hotelId', controller.deleteHotel);
 
-router.get('/hotel/:hotelId', controller.getClassInfo);
+router.get('/:hotelId', controller.getClassInfo);
 
 
 export = router;

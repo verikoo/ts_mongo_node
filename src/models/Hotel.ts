@@ -18,12 +18,12 @@ export interface IHotelModel extends IHotel, Document {}
 const HotelSchema: Schema = new Schema(
   {
    name: { type: String, required: true },
-        owner: { type: String, required: true },
-        fullAddress: { type: String, required: true },
-        contactInfo: { type: String, required: true },
-        totalRooms: { type: Number, required: true },
-        bookedRooms: { type: Number, required: true },
-        guests: [{ type: Schema.Types.ObjectId, ref: 'Guest' }]
+    owner: { type: String, required: true },
+    fullAddress: { type: String, required: true },
+    contactInfo: { type: String, required: true },
+    totalRooms: { type: Number, required: true },
+    bookedRooms: { type: Number, required: true },
+    guests: [{ type: Schema.Types.ObjectId, ref: 'Guest' }],
   },
   { versionKey: false }
 );

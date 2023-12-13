@@ -28,19 +28,32 @@ const createHotel = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-    const readHotel = (req: Request, res: Response, next: NextFunction) => {
+    const readHotel = async (req: Request, res: Response, next: NextFunction) => {
         const hotelId = req.params.hotelId;
 
-        return Hotel.findById(hotelId)
-            .then((hotel) => (hotel ? res.status(200).json({ hotel }) : res.status(404).json({ message: 'Not found' })))
+        const guestsCount = await Guest.countDocuments()
+
+        return Hotel.findById(hotelId).lean()
+            .then((hotel) => {
+                if (hotel) {
+                    res.json({
+                        ...hotel,
+                        guestsCount: guestsCount,
+                    })
+                } else {
+                    res.status(404).json({
+                        data: []
+                    })
+                }
+            })
             .catch((error) => res.status(500).json({ error }));
     };
 
-const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
-    return Hotel.find()
-        .then((hotels) => res.status(200).json({ hotels }))
-        .catch((error) => res.status(500).json({ error }));
-};
+// const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
+//     return Hotel.find()
+//         .then((hotels) => res.status(200).json({ hotels }))
+//         .catch((error) => res.status(500).json({ error }));
+// };
 
 const updateHotel = (req: Request, res: Response, next: NextFunction) => {
     const hotelId = req.params.hotelId;
@@ -98,4 +111,4 @@ const getClassInfo = async (req: Request, res: Response, next: NextFunction) => 
 
 
 
-export default { createHotel, readHotel, readAllHotels, updateHotel, deleteHotel ,getClassInfo};
+export default { createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};

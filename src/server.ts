@@ -12,7 +12,7 @@ import hotelRout from './routes/Hotel'
 import guestRoute from "./routes/Guest";
 
 
-const router = express();
+const app = express();
 
 
 /** Connect to Mongo */ 
@@ -30,7 +30,7 @@ mongoose
 
 /** Only start the server when mongo connects */ 
 const StartServer =  () =>{
-    router.use((req,res,next)=>{
+    app.use((req,res,next)=>{
         /** Log The Request */
         Logging.info(`Incomming  -> Method: [${req.method}] -  Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
@@ -42,11 +42,11 @@ const StartServer =  () =>{
         next(); 
     });
     
-    router.use(express.urlencoded({extended:true}));
-    router.use(express.json());
+    app.use(express.urlencoded({extended:true}));
+    app.use(express.json());
     
     /** rules of API */
-    router.use((req,res,next)=>{
+    app.use((req,res,next)=>{
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Hedaers', 'Origin, X-Requested-With, Content-type, Accept, Authorization');
 
@@ -59,26 +59,27 @@ const StartServer =  () =>{
     });
 
     /** Routes */
-    router.use('/hotelServices', hotelServcieRoutes);
-    router.use('/payment',paymentRout );
-    router.use('/room', roomRout);
-    router.use('/hotel', hotelRout);
-    router.use('/guest', guestRoute);
+    app.use('/hotelServices', hotelServcieRoutes);
+    app.use('/payment',paymentRout );
+    app.use('/room', roomRout);
+    app.use('/hotel', hotelRout);
+    app.use('/guest', guestRoute);
 
     /** Helathckeck*/
-    router.get('/ping', (req,res, next)=> res.status(200).json({message:'pong'}));
+    app.get('/ping', (req,res, next)=> res.status(200).json({message:'pong'}));
 
     /** Error handling */
-    router.use((req, res, next)=>{
+    app.use((req, res, next)=>{
         const error = new Error('not found');
         Logging.error(error);
 
         return res.status(404).json({message: error.message});
     });
 
-    http.createServer(router).listen(config.server.port, ()=> Logging.info(`Server is running on
+    http.createServer(app).listen(config.server.port, ()=> Logging.info(`Server is running on
      port ${config.server.port}`));
 
 
 };
+export default app;
 

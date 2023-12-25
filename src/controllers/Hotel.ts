@@ -49,11 +49,11 @@ const createHotel = (req: Request, res: Response, next: NextFunction) => {
             .catch((error) => res.status(500).json({ error }));
     };
 
-// const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
-//     return Hotel.find()
-//         .then((hotels) => res.status(200).json({ hotels }))
-//         .catch((error) => res.status(500).json({ error }));
-// };
+const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
+    return Hotel.find()
+        .then((hotels) => res.status(200).json({ hotels }))
+        .catch((error) => res.status(500).json({ error }));
+};
 
 const updateHotel = (req: Request, res: Response, next: NextFunction) => {
     const hotelId = req.params.hotelId;
@@ -111,4 +111,4 @@ const getClassInfo = async (req: Request, res: Response, next: NextFunction) => 
 
 
 
-export default { createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};
+export default { readAllHotels,createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};

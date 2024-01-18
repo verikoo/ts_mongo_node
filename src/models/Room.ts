@@ -11,9 +11,9 @@ export interface IRoomModel extends IRoom, Document {}
 
 const RoomSchema: Schema = new Schema(
   {
-    roomType: { type: String, required: true },
-    price: { type: Number, required: true },
-    isBooked: { type: Boolean, required: true },
+    roomType:{type: String, required: true},
+    price:{type: Number, required: true },
+    isBooked:{type: Boolean, required: true},
   },
   { versionKey: false }
 );

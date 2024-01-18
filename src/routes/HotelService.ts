@@ -3,10 +3,10 @@ import controller from '../controllers/HotelService';
 
 const router = express.Router();
 
-router.post('/create', controller.createHotelService);
-router.get('/get/:hotelServiceId', controller.readHotelService);
-router.get('/get/', controller.readAllHotelService);
-router.patch('/update/:hotelServiceId', controller.updateHotelService);
-router.delete('/delete/:hotelServiceId', controller.deleteHotelService);
+router.post('/', controller.createHotelService);
+router.get('t/:hotelServiceId', controller.readHotelService);
+router.get('/', controller.readAllHotelService);
+router.patch('/:hotelServiceId', controller.updateHotelService);
+router.delete('/:hotelServiceId', controller.deleteHotelService);
 
 export = router;

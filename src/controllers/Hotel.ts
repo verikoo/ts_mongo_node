@@ -111,4 +111,4 @@ const getClassInfo = async (req: Request, res: Response, next: NextFunction) => 
 
 
 
-export default { readAllHotels,createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};
+export default { readAllHotels, createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};

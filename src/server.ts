@@ -11,6 +11,11 @@ import roomRout from './routes/Room';
 import hotelRout from './routes/Hotel'
 import guestRoute from "./routes/Guest";
 
+// new routes 
+import reviewRoute from './routes/Review';
+import reservationRoute from './routes/Reservation';
+import employeeRoute from './routes/Employee';
+
 
 const app = express();
 
@@ -64,6 +69,10 @@ const StartServer =  () =>{
     app.use('/room', roomRout);
     app.use('/hotel', hotelRout);
     app.use('/guest', guestRoute);
+    app.use('/hotelService', hotelServcieRoutes);
+    app.use('/employee', employeeRoute);
+    app.use('/reservation', reservationRoute);
+    app.use('/review', reviewRoute);
 
     /** Helathckeck*/
     app.get('/ping', (req,res, next)=> res.status(200).json({message:'pong'}));

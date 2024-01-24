@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Payment from '../models/Payment';
+import { validationResult } from 'express-validator';
+
 
 const createPayment = (req: Request, res: Response, next: NextFunction) => {
-    const { amount, paymentMethod } = req.body;
+    
+    const errors = validationResult(req);
 
-    if (!amount || !paymentMethod) {
-        return res.status(400).json({ error: 'All fields are required.' });
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const { amount, paymentMethod } = req.body;
 
     const payment = new Payment({
         _id: new mongoose.Types.ObjectId(),
@@ -35,7 +40,7 @@ const readAllPayments = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-const updatePayment = (req: Request, res: Response, next: NextFunction) => {
+const updatePayment = async(req: Request, res: Response, next: NextFunction) => {
     const paymentId = req.params.paymentId;
 
     const isValidObjectId = mongoose.Types.ObjectId.isValid(paymentId);
@@ -44,28 +49,24 @@ const updatePayment = (req: Request, res: Response, next: NextFunction) => {
         return res.status(400).json({ message: 'Invalid ObjectId format' });
     }
 
-    return Payment.findById(paymentId)
-        .then((payment) => {
-            if (payment) {
-                payment.set(req.body);
+      await Payment.findByIdAndUpdate(paymentId, req.body).catch(err => console.log(err.message))
 
-                return payment
-                    .save()
-                    .then((payment) => res.status(201).json({ payment }))
-                    .catch((error) => res.status(500).json({ error }));
-            } else {
-                return res.status(404).json({ message: 'Not found' });
-            }
-        })
-        .catch((error) => res.status(500).json({ error }));
+     return res.json({message:"updated"})
+
 };
 
-const deletePayment = (req: Request, res: Response, next: NextFunction) => {
+const deletePayment = async (req: Request, res: Response, next: NextFunction) => {
     const paymentId = req.params.paymentId;
 
-    return Payment.findById(paymentId)
-        .then((payment) => (payment ? res.status(201).json({ message: 'deleted' }) : res.status(404).json({ message: 'Not found' })))
-        .catch((error) => res.status(500).json({ error }));
+    const isValidObjectId = mongoose.Types.ObjectId.isValid(paymentId);
+
+    if (!isValidObjectId) {
+        return res.status(400).json({ message: 'Invalid ObjectId format' });
+    }
+
+    await Payment.findOneAndDelete({ _id: paymentId }).catch(err => console.log(err.message));
+    
+    return res.json({message:'deleted'});
 };
 
 export default { createPayment, readPayment, readAllPayments, updatePayment, deletePayment };

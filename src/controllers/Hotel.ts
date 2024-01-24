@@ -2,15 +2,20 @@ import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Hotel from '../models/Hotel';
 import Guest from '../models/Guest';
+import { validationResult } from 'express-validator';
+
 
 
 const createHotel = (req: Request, res: Response, next: NextFunction) => {
-    const { name, owner, fullAddress, contactInfo, totalRooms, bookedRooms, guests } = req.body;
+    const errors = validationResult(req);
 
-    if (!name || !owner || !fullAddress || !contactInfo || !totalRooms || !bookedRooms || !guests) {
-        return res.status(400).json({ error: 'All fields are required.' });
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
 
+    const { name, owner, fullAddress, contactInfo, totalRooms, bookedRooms, guests } = req.body;
+
+   
     const hotel = new Hotel({
         _id: new mongoose.Types.ObjectId(),
         name,
@@ -28,26 +33,29 @@ const createHotel = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-    const readHotel = async (req: Request, res: Response, next: NextFunction) => {
+const readHotel = async (req: Request, res: Response, next: NextFunction) => {
+    try {
         const hotelId = req.params.hotelId;
 
-        const guestsCount = await Guest.countDocuments()
+        const guestsCount = await Guest.countDocuments();
 
-        return Hotel.findById(hotelId).lean()
-            .then((hotel) => {
-                if (hotel) {
-                    res.json({
-                        ...hotel,
-                        guestsCount: guestsCount,
-                    })
-                } else {
-                    res.status(404).json({
-                        data: []
-                    })
-                }
-            })
-            .catch((error) => res.status(500).json({ error }));
-    };
+        const hotel = await Hotel.findById(hotelId).lean();
+
+        if (hotel) {
+            res.json({
+                ...hotel,
+                guestsCount: guestsCount,
+            });
+        } else {
+            res.status(404).json({
+                data: []
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
 
 const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
     return Hotel.find()
@@ -55,7 +63,7 @@ const readAllHotels = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-const updateHotel = (req: Request, res: Response, next: NextFunction) => {
+const updateHotel = async (req: Request, res: Response, next: NextFunction) => {
     const hotelId = req.params.hotelId;
 
     const isValidObjectId = mongoose.Types.ObjectId.isValid(hotelId);
@@ -64,32 +72,24 @@ const updateHotel = (req: Request, res: Response, next: NextFunction) => {
         return res.status(400).json({ message: 'Invalid ObjectId format' });
     }
 
-    return Hotel.findById(hotelId)
-        .then((hotel) => {
-            if (hotel) {
-                hotel.set(req.body);
+    await Hotel.findByIdAndUpdate(hotelId, req.body).catch(err=>console.log(err.message));
 
-                return hotel
-                    .save()
-                    .then((hotel) => res.status(201).json({ hotel }))
-                    .catch((error) => res.status(500).json({ error }));
-            } else {
-                return res.status(404).json({ message: 'Not found' });
-            }
-        })
-        .catch((error) => res.status(500).json({ error }));
+    return res.json({message:'updated'})
+
 };
 
-const deleteHotel = (req: Request, res: Response, next: NextFunction) => {
+const deleteHotel = async (req: Request, res: Response, next: NextFunction) => {
     const hotelId = req.params.hotelId;
+     const isValidObjectId = mongoose.Types.ObjectId.isValid(hotelId);
 
-    return Hotel.findById(hotelId)
-        .then((hotel) => (hotel ? res.status(201).json({ message: 'deleted' }) : res.status(404).json({ message: 'Not found' })))
-        .catch((error) => res.status(500).json({ error }));
+
+    await Hotel.findByIdAndDelete({_id:hotelId}).catch(err=>console.log(err.message));
+
+    return res.json({message:"deleted"});
 };
 
 
-// readinfo
+// count guest 
 
 const getClassInfo = async (req: Request, res: Response, next: NextFunction) => {
     const hotelId = req.params.hotelId;

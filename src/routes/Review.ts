@@ -4,9 +4,9 @@ import controller from '../controllers/Review';
 const router = express.Router();
 
 router.post('/',  controller.createReview);
-router.get('/:hotelServiceId', controller.readReview);
+router.get('/:reviewId', controller.readReview);
 router.get('/', controller.readAllReviews);
-router.patch('/:hotelServiceId', controller.updateReview);
-router.delete('/:hotelServiceId', controller.deleteReview);
+router.patch('/:reviewId', controller.updateReview);
+router.delete('/:reviewId', controller.deleteReview);
 
 export = router;

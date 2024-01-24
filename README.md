@@ -34,13 +34,21 @@ npm run watch
 - Chalk - a popular library for styling command-line output with colors
 
 ##EndPoints 
+<!-- tested -->
 Hotel: http://localhost:9090/hotel
-Guest: http://localhost:9090/Guest
+<!-- tested -->
+Guest: http://localhost:9090/Guest 
+<!-- tested  --> 
 Payment:http://localhost:9090/Payment
+<!-- tested(compare with other methods) -->
 Room: http://localhost:9090/Room
+<!-- tested(mesaages ok) -->
 HotelService: http://localhost:9090/HotelService: 
+<!-- tested -->
 Employee: http://localhost:9090/Employee
+<!-- tested -->
 Reservation: http://localhost:9090/reservation
+<!-- tested -->
 Review: http://localhost:9090/review
 ## Author
 [Veriko Lomadze]

@@ -10,7 +10,7 @@ export interface IHotel {
   totalRooms: number;
   bookedRooms: number;
   // guests: Types.Array<IGuest | Types.ObjectId>;
-  guests: mongoose.Types.ObjectId[]|IGuest[];
+  guests: mongoose.Types.ObjectId[];
 }
 
 export interface IHotelModel extends IHotel, Document {}

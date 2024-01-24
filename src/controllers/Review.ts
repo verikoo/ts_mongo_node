@@ -1,13 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Review from '../models/Review';
+import { validationResult } from 'express-validator';
+
 
 const createReview = (req: Request, res: Response, next: NextFunction) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { guestId, rating, comments } = req.body;
 
-    if (!guestId || !rating || !comments) {
-        return res.status(400).json({ error: 'All fields are required.' });
-    }
 
     const review = new Review({
         _id: new mongoose.Types.ObjectId(),
@@ -47,7 +53,7 @@ const updateReview = async (req: Request, res: Response, next: NextFunction) => 
 
     await Review.findByIdAndUpdate(reviewId, req.body).catch((err) => console.log(err.message));
 
-    return res.json({});
+    return res.json({message:"updated"});
 };
 
 const deleteReview = async (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +66,7 @@ const deleteReview = async (req: Request, res: Response, next: NextFunction) => 
     }
 
     await Review.findOneAndDelete({ _id: reviewId }).catch((err) => console.log(err.message));
-    return res.json({});
+    return res.json({message:"deleted"});
 };
 
 export default { createReview, readReview, readAllReviews, updateReview, deleteReview };

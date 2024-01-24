@@ -5,9 +5,9 @@ import controller from '../controllers/Reservation';
 const router = express.Router();
 
 router.post('/', controller.createReservation);
-router.get('/:employeeId', controller.readReservation);
-router.get('/', controller.readAllReservations);
-router.patch('/:employeeId', controller.updateReservation);
-router.delete('/:employeeId', controller.deleteReservation);
+router.get('/:reservationId', controller.readReservation);
+router.get('/', controller.readAllReservation);
+router.patch('/:reservationId', controller.updateReservation);
+router.delete('/:reservationId', controller.deleteReservation);
 
 export = router;

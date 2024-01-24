@@ -9,7 +9,8 @@
 
   export interface IEmployeeModel extends IEmployee, Document{}
 
-  const EmployeeSchema: Schema =  new Schema({
+  const EmployeeSchema: Schema =  new Schema(
+    {
     name: {type: String, required: true},
     role: {type: String, required: true},
     contactInfo: {type: String, required: true}

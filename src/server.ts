@@ -3,6 +3,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
+import swaggerUi from "swagger-ui-express";
 
 // import routes
 import hotelServcieRoutes from './routes/HotelService';
@@ -16,8 +17,14 @@ import reviewRoute from './routes/Review';
 import reservationRoute from './routes/Reservation';
 import employeeRoute from './routes/Employee';
 
+// Import Swagger setup
+import { setupSwagger } from './swagger';
+
 
 const app = express();
+
+// Set up Swagger UI
+setupSwagger(app);
 
 
 /** Connect to Mongo */ 
@@ -90,5 +97,7 @@ const StartServer =  () =>{
 
 
 };
+
+
 export default app;
 

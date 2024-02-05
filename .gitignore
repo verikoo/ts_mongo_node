@@ -1,4 +1,12 @@
 *.env
 
 node_modules/
+.vscode
 
+# Node.js
+node_modules/
+dist/
+build/
+
+# Visual Studio Code
+.vscode/

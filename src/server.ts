@@ -3,6 +3,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
+import swaggerUi from "swagger-ui-express";
 
 // import routes
 import hotelServcieRoutes from './routes/HotelService';
@@ -11,8 +12,19 @@ import roomRout from './routes/Room';
 import hotelRout from './routes/Hotel'
 import guestRoute from "./routes/Guest";
 
+// new routes 
+import reviewRoute from './routes/Review';
+import reservationRoute from './routes/Reservation';
+import employeeRoute from './routes/Employee';
+
+// Import Swagger setup
+import { setupSwagger } from './swagger';
+
 
 const app = express();
+
+// Set up Swagger UI
+setupSwagger(app);
 
 
 /** Connect to Mongo */ 
@@ -64,6 +76,10 @@ const StartServer =  () =>{
     app.use('/room', roomRout);
     app.use('/hotel', hotelRout);
     app.use('/guest', guestRoute);
+    app.use('/hotelService', hotelServcieRoutes);
+    app.use('/employee', employeeRoute);
+    app.use('/reservation', reservationRoute);
+    app.use('/review', reviewRoute);
 
     /** Helathckeck*/
     app.get('/ping', (req,res, next)=> res.status(200).json({message:'pong'}));
@@ -81,5 +97,7 @@ const StartServer =  () =>{
 
 
 };
+
+
 export default app;
 

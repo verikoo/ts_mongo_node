@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Guest from '../models/Guest';
+import { validationResult } from 'express-validator';
+
 
 const createGuest = (req: Request, res: Response, next: NextFunction) => {
-    const { name, contactInfo, nationality, dateOfBirth, idNumber } = req.body;
 
-    if (!name || !contactInfo || !nationality || !dateOfBirth || !idNumber) {
-        return res.status(400).json({ error: 'All fields are required.' });
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const { name, contactInfo, nationality, dateOfBirth, idNumber } = req.body;
 
     const guest = new Guest({
         _id: new mongoose.Types.ObjectId(),
@@ -39,6 +44,7 @@ const readAllGuests = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const updateGuest = async (req: Request, res: Response, next: NextFunction) => {
+
     const guestId = req.params.guestId;
 
     const isValidObjectId = mongoose.Types.ObjectId.isValid(guestId);
@@ -49,7 +55,7 @@ const updateGuest = async (req: Request, res: Response, next: NextFunction) => {
 
      await Guest.findByIdAndUpdate(guestId, req.body).catch(err => console.log(err.message))
 
-     return res.json({})
+     return res.json({message:"updated"})
 };
 
 
@@ -63,7 +69,7 @@ const deleteGuest = async (req: Request, res: Response, next: NextFunction) => {
     }
 
         await Guest.findOneAndDelete({ _id: guestId }).catch(err => console.log(err.message));
-        return res.json({});
+        return res.json({message:'deleted'});
 };
 
 

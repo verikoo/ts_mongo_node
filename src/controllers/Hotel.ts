@@ -91,24 +91,24 @@ const deleteHotel = async (req: Request, res: Response, next: NextFunction) => {
 
 // count guest 
 
-const getClassInfo = async (req: Request, res: Response, next: NextFunction) => {
-    const hotelId = req.params.hotelId;
+// const getClassInfo = async (req: Request, res: Response, next: NextFunction) => {
+//     const hotelId = req.params.hotelId;
 
-    try {
-        const guestClass = await Hotel.findById(hotelId).populate('guests');
+//     try {
+//         const guestClass = await Hotel.findById(hotelId).populate('guests');
 
-        if (!guestClass) {
-            return res.status(404).json({ message: 'Class not found' });
-        }
+//         if (!guestClass) {
+//             return res.status(404).json({ message: 'Class not found' });
+//         }
 
-        const guestCount = guestClass.guests.length;
+//         const guestCount = guestClass.guests.length;
 
-        return res.status(200).json({ hotel: guestClass, guestCount });
-    } catch (error) {
-        return res.status(500).json({ error });
-    }
-};
+//         return res.status(200).json({ hotel: guestClass, guestCount });
+//     } catch (error) {
+//         return res.status(500).json({ error });
+//     }
+// };
 
 
 
-export default { readAllHotels, createHotel, readHotel, updateHotel, deleteHotel ,getClassInfo};
+export default { readAllHotels, createHotel, readHotel, updateHotel, deleteHotel };

@@ -3,7 +3,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
-import swaggerUi from "swagger-ui-express";
+
 
 // import routes
 import hotelServcieRoutes from './routes/HotelService';
@@ -19,12 +19,45 @@ import employeeRoute from './routes/Employee';
 
 // Import Swagger setup
 import { setupSwagger } from './swagger';
-
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import bodyParser from "body-parser";
 
 const app = express();
+app.use(bodyParser.json())
 
-// Set up Swagger UI
-setupSwagger(app);
+
+// swagger 
+const options = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "REST API for Swagger Documentation",
+      version: "1.0.0",
+    },
+    schemes: ["http", "https"],
+    servers: [{ url: "http://localhost:9090/" }],
+  },
+  apis: [
+    `${__dirname}/routes/Employee.ts`,
+    `${__dirname}/routes/Guest.ts`,
+    `${__dirname}/routes/Hotel.ts`,
+    `${__dirname}/routes/HotelService.ts`,
+    `${__dirname}/routes/Payment.ts`,
+    `${__dirname}/routes/Reservation.ts`,
+    `${__dirname}/routes/Review.ts`,
+    `${__dirname}/routes/Room.ts`,
+
+    "./dist/routes/example-route.js",
+  ],
+};
+const swaggerSpec = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(bodyParser.json());
+
+
+
+
 
 
 /** Connect to Mongo */ 

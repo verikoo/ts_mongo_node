@@ -9,11 +9,14 @@
     "test": "jest",
     "watch": "tsc -w",
     "type": "module",
-    "seed": "node seed/GuestSeeder.js"
+    "seed": "node seed/GuestSeeder.js",
+    "start:swagger": "tsoa swagger && tsoa routes && tsc && node ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tsoa/runtime": "^6.0.0",
+    "body-parser": "^1.20.2",
     "chalk": "^4.1.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -27,6 +30,7 @@
     "@types/express": "^4.17.21",
     "@types/faker": "^6.6.9",
     "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.11",
     "@types/supertest": "^2.0.16",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
@@ -36,6 +40,7 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
+    "tsoa": "^6.0.1",
     "typescript": "^5.3.3"
   }
 }
